@@ -1,0 +1,27 @@
+---
+interface Props {
+    totalPages: number;
+}
+const {totalPages} = Astro.props;
+const url = Astro.url
+const pageParam = Number(url.searchParams.get('page') ?? 1);
+const currentPage = Math.max((pageParam > totalPages) ? totalPages : pageParam, 1);
+const path = url.pathname
+---
+
+
+<div class="mt-10 flex justify-center">
+    <nav class="flex space-x-2" aria-label="Pagination">
+        <a href="#" class="relative inline-flex items-center px-4 py-2 text-sm bg-gradient-to-r from-violet-300 to-indigo-300 border border-fuchsia-100 hover:border-violet-100 text-white font-semibold cursor-pointer leading-5 rounded-md transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+            Anterior
+        </a>
+        <a href={`${path}?page=${Math.max(currentPage -1, 1)}`} class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-fuchsia-100 hover:bg-fuchsia-200 cursor-pointer leading-5 rounded-md transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+            <span>
+                Página {currentPage} de {totalPages}
+            </span>
+        </a>
+        <a href={`${path}?page=${Math.min(currentPage +1, totalPages)}`} class="relative inline-flex items-center px-4 py-2 text-sm bg-gradient-to-r from-violet-300 to-indigo-300 border border-fuchsia-100 hover:border-violet-100 text-white font-semibold cursor-pointer leading-5 rounded-md transition duration-150 ease-in-out focus:outline-none focus:shadow-outline-blue focus:border-blue-300 focus:z-10">
+            Siguiente
+        </a>
+    </nav>
+</div>
