@@ -3,6 +3,7 @@ import { defineConfig } from 'auth-astro';
 import Credentials from "@auth/core/providers/credentials"
 import { db, eq, User } from 'astro:db';
 import bcrypt from 'bcryptjs';
+import type { AdapterUser } from '@auth/core/adapters';
 
 export default defineConfig({
   providers: [
@@ -28,4 +29,18 @@ export default defineConfig({
       }
     })
   ],
+  callbacks:{
+    jwt: async({token, user})=>{
+      if(user){
+        token.user = user;
+      }
+      return token;
+    },
+    session: async({session, token})=>{
+      if(token.user){
+        session.user = token.user as AdapterUser;
+      }
+      return session;
+    }
+  }
 });

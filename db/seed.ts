@@ -1,6 +1,7 @@
 import {v4 as UUID } from 'uuid';
 import bcrypt from 'bcryptjs';
-import { db, Role, User } from 'astro:db';
+import { db, Role, User, Product, ProductImage } from 'astro:db';
+import { seedProducts } from './seed-data';
 
 // https://astro.build/db/seed
 export default async function seed() {
@@ -27,4 +28,31 @@ export default async function seed() {
 
 	await db.insert(Role).values(roles);
 	await db.insert(User).values([JohnDoe, JaneDoe]);
+	
+	const queries: any =[];
+	seedProducts.forEach((p)=>{
+		const product = {
+			id:UUID(),
+			stock: p.stock,
+			slug: p.slug,
+			price: p.price,
+			sizes: p.sizes.join(','),
+			type: p.type,
+			tags: p.tags.join(','),
+			title: p.title,
+			description: p.description,
+			gender: p.gender,
+			user: JohnDoe.id
+		};
+		queries.push(db.insert(Product).values(product));
+		p.images.forEach( img =>{
+			const image = {
+				id:UUID(),
+				image: img,
+				productId: product.id
+			};
+			queries.push(db.insert(ProductImage).values(image));
+		});
+	})
+	await db.batch(queries);
 }
