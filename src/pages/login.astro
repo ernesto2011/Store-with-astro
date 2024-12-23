@@ -89,7 +89,6 @@ import AuthLayout from '@/layouts/AuthLayout.astro';
 </AuthLayout>
 
 <script>
-  import { actions } from 'astro:actions';
   import Swal from 'sweetalert2';
 
   const form = document.querySelector('form') as HTMLFormElement;
@@ -109,8 +108,6 @@ import AuthLayout from '@/layouts/AuthLayout.astro';
       password: formData.get('password') as string,
       redirect: false,
     });
-
-    console.log({ resp });
 
     if (resp) {
       Swal.fire({

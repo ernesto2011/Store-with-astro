@@ -6,7 +6,6 @@ export const getProductBySlug = defineAction({
     accept: 'json',
     input: z.string(),
     handler: async (slug) => {
-        console.log({slug});
         
         const [product] = await db.select().from(Product).where(eq(Product.slug, slug))
         if(!product){

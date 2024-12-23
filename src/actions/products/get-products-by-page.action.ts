@@ -28,7 +28,6 @@ export const getProductsByPage = defineAction({
         LIMIT ${limit} OFFSET ${(page-1)* limit};
         `;
     const { rows } = await db.run(productsQuery)
-    console.log(rows);
     
     // const products = await db.select().from(Product).innerJoin(ProductImage, eq(Product.id, ProductImage.productId)).limit(limit).offset((page - 1) * 12);
     return {

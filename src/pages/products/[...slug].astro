@@ -3,7 +3,6 @@ import MainLayout from "@/layouts/MainLayout.astro";
 import ProductSlideShow from "@/components/products/ProductSlideShow.astro";
 import { actions } from "astro:actions";
 const { slug } = Astro.params;
-console.log({slug});
 
 const {data, error} = await Astro.callAction(actions.getProductBySlug,slug ?? '')
 if(error){
@@ -20,7 +19,7 @@ const { product, images} = data;
   <!-- image={image} -->
   <!-- <h1>{product.title}</h1> -->
 
-  <div class="grid grid-cols-1 md:grid-cols-3 w-full">
+  <div class="grid grid-cols-1 md:grid-cols-3 w-full gap-4">
     <ProductSlideShow images={images} />
 
     <section>
@@ -55,6 +54,41 @@ const { product, images} = data;
   <input type="hidden" id="product-id" value={product.id} />
 </MainLayout>
 
+<script>
+import Swal from "sweetalert2";
+
+  const sizeElemets = document.querySelectorAll('li');
+  sizeElemets.forEach( liElement =>{
+    liElement.addEventListener('click', ()=>{
+      sizeElemets.forEach(s=> s.classList.remove('selected-size'));
+      liElement.classList.add ('selected-size')
+    })
+  })
+  const quantityInput = document.querySelector('input') as HTMLInputElement;
+  const productid = document.querySelector('#product-id') as HTMLInputElement;
+  let quantity = 1;
+  const [decrementBtn, incrementBtn, addToCardbtn] = document.querySelectorAll('button');
+
+  incrementBtn.addEventListener('click',()=>{
+    quantity = Math.min(quantity + 1, 5)
+    quantityInput.value = quantity.toString();
+  })
+  decrementBtn.addEventListener('click',()=>{
+    quantity = Math.max(quantity - 1, 1)
+    quantityInput.value = quantity.toString();
+  })
+  addToCardbtn.addEventListener('click', ()=>{
+    const size = document.querySelector('.selected-size')?.textContent;
+    if (!size) {
+      Swal.fire({
+        icon:"error",
+        title:"Error...",
+        text:"Debe seleecionar una talla!!"
+      })
+    }
+    addToCardbtn.disabled = true;
+  })
+</script>
 
 <style>
   h3 {
