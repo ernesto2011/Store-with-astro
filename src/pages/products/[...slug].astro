@@ -42,7 +42,7 @@ const { product, images} = data;
         <button class="btn-quantity">+</button>
       </div>
 
-      <button class="mt-5 bg-blue-500 text-white p-3 w-full"
+      <button class="mt-5 bg-blue-500 text-white p-3 w-full disabled:bg-gray-400"
         >Añadir al carrito</button
       >
 
@@ -55,6 +55,7 @@ const { product, images} = data;
 </MainLayout>
 
 <script>
+import { CartCookiesClient } from "@/utils";
 import Swal from "sweetalert2";
 
   const sizeElemets = document.querySelectorAll('li');
@@ -80,13 +81,19 @@ import Swal from "sweetalert2";
   addToCardbtn.addEventListener('click', ()=>{
     const size = document.querySelector('.selected-size')?.textContent;
     if (!size) {
-      Swal.fire({
+      return Swal.fire({
         icon:"error",
         title:"Error...",
         text:"Debe seleecionar una talla!!"
       })
     }
     addToCardbtn.disabled = true;
+    CartCookiesClient.additem({
+      productId: productid.value,
+      size: size,
+      quantity:quantity,
+    })
+    window.location.href = '/cart'
   })
 </script>
 
