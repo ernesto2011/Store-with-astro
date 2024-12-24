@@ -55,9 +55,12 @@ const { product, images} = data;
 </MainLayout>
 
 <script>
+import { itemsInCart } from "@/store/cart.store";
 import { CartCookiesClient } from "@/utils";
+import { navigate } from "astro:transitions/client";
 import Swal from "sweetalert2";
 
+document.addEventListener('astro:page-load',()=>{
   const sizeElemets = document.querySelectorAll('li');
   sizeElemets.forEach( liElement =>{
     liElement.addEventListener('click', ()=>{
@@ -69,6 +72,7 @@ import Swal from "sweetalert2";
   const productid = document.querySelector('#product-id') as HTMLInputElement;
   let quantity = 1;
   const [decrementBtn, incrementBtn, addToCardbtn] = document.querySelectorAll('button');
+  if (!incrementBtn || !quantityInput) return;
 
   incrementBtn.addEventListener('click',()=>{
     quantity = Math.min(quantity + 1, 5)
@@ -78,7 +82,7 @@ import Swal from "sweetalert2";
     quantity = Math.max(quantity - 1, 1)
     quantityInput.value = quantity.toString();
   })
-  addToCardbtn.addEventListener('click', ()=>{
+  addToCardbtn.addEventListener('click', async ()=>{
     const size = document.querySelector('.selected-size')?.textContent;
     if (!size) {
       return Swal.fire({
@@ -88,13 +92,17 @@ import Swal from "sweetalert2";
       })
     }
     addToCardbtn.disabled = true;
-    CartCookiesClient.additem({
+    const cart = CartCookiesClient.additem({
       productId: productid.value,
       size: size,
       quantity:quantity,
     })
-    window.location.href = '/cart'
+    itemsInCart.set(cart.length)
+    // window.location.href = '/cart'
+    await navigate('/cart')
   })
+})
+ 
 </script>
 
 <style>
