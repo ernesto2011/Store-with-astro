@@ -147,7 +147,14 @@ const { product, images} = data;
         <div class="flex">
           {
             ['XS', 'S', 'M', 'L', 'XL', 'XXL'].map((size) => (
-              <button class="btn-size">{size}</button>
+              <button 
+              type="button"
+              class="btn-size"
+              onclick="this.classList.toggle('active')"
+              class:list={
+                product.sizes.split(',').includes(size) ? 'active' : ''
+              }
+              >{size}</button>
             ))
           }
         </div>
@@ -251,3 +258,26 @@ const { product, images} = data;
       @apply bg-blue-500 text-white;
     }
   </style>
+</MainLayout>
+
+<script>
+  document.addEventListener('astro:page-load', ()=>{
+    const form = document.querySelector('form') as HTMLFormElement;
+    const sizeButtons = document.querySelectorAll('.btn-size');
+    if(!form){
+      return;
+    }
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const selectedSizes = Array.from(sizeButtons)
+        .filter(btn =>  btn.classList.contains('active'))
+        .map(btn => btn.textContent?. trim())
+        .join(',');
+      const formData = new FormData(form);
+      formData.set('sizes',selectedSizes);
+      const formValues = Object.fromEntries(formData.entries())
+      console.log({formValues});
+      
+    })
+  })
+</script>
