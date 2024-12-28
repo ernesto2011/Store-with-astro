@@ -261,13 +261,15 @@ const { product, images} = data;
 </MainLayout>
 
 <script>
+import { actions } from "astro:actions";
+
   document.addEventListener('astro:page-load', ()=>{
     const form = document.querySelector('form') as HTMLFormElement;
     const sizeButtons = document.querySelectorAll('.btn-size');
     if(!form){
       return;
     }
-    form.addEventListener('submit', (e)=>{
+    form.addEventListener('submit', async(e)=>{
       e.preventDefault();
       const selectedSizes = Array.from(sizeButtons)
         .filter(btn =>  btn.classList.contains('active'))
@@ -275,8 +277,14 @@ const { product, images} = data;
         .join(',');
       const formData = new FormData(form);
       formData.set('sizes',selectedSizes);
-      const formValues = Object.fromEntries(formData.entries())
-      console.log({formValues});
+
+      const {data, error} = await actions.updateProduct(formData)
+      if(error){
+        console.log(error);
+        
+      }
+      console.log(data);
+      
       
     })
   })
