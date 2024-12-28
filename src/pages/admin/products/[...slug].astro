@@ -17,6 +17,7 @@ const { product, images} = data;
   <a href="javascript:history.back()" class="text-blue-500">← Volver</a>
 
   <form class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    <input type="hidden" name="id" value={product.id}>
     <!-- Datos generales -->
     <div class="mt-2">
       <h2 class="text-lg font-semibold">Datos generales</h2>
@@ -262,6 +263,8 @@ const { product, images} = data;
 
 <script>
 import { actions } from "astro:actions";
+import { navigate } from "astro:transitions/client";
+import Swal from "sweetalert2";
 
   document.addEventListener('astro:page-load', ()=>{
     const form = document.querySelector('form') as HTMLFormElement;
@@ -280,10 +283,13 @@ import { actions } from "astro:actions";
 
       const {data, error} = await actions.updateProduct(formData)
       if(error){
-        console.log(error);
-        
+        Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Ha occurrido un error al actualizar el producto!!",
+      });
       }
-      console.log(data);
+      navigate(`/admin/products/${data?.slug}`)
       
       
     })

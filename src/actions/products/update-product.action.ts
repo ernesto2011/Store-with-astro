@@ -1,4 +1,5 @@
 import { defineAction } from "astro:actions";
+import { db, eq, Product } from "astro:db";
 import { z } from "astro:schema";
 import { getSession } from "auth-astro/server";
 import {v4 as UUID } from 'uuid';
@@ -31,9 +32,13 @@ export const updateProduct = defineAction({
             user: user.id,
             ...rest
         }
-        console.log({product});
+        if(!form.id){
+            await db.insert(Product).values(product);
+        }else{
+            await db.update(Product).set(product).where(eq(Product.id, id));
+        }
         
-        return {ok:true}
+        return product;
         
     }
 })

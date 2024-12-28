@@ -24,7 +24,12 @@ if (data.products.length === 0) {
 <MainLayout title="Dashboard | Admin">
     <section class="flex flex-col gap-3">
         <h1>Productos</h1>
-        <p class="text-gray-500 font-medium">Listado de productos</p>
+        <div class="flex flex-row justify-between">
+            <p class="text-gray-500 font-medium">Listado de productos</p>
+        <div class=" flex items-center ">
+            <a href="/admin/products/new" class="bg-blue-500 text-white font-bold text-[16px] px-4 py-2 hover:bg-blue-700 rounded transition-all">Nuevo</a>
+        </div>
+        </div>
         <table class="w-full mt-2">
            <thead>
                <tr>
