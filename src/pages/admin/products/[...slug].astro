@@ -293,5 +293,12 @@ import Swal from "sweetalert2";
       
       
     })
+    // eleminación de imagenes
+    const btnsDeleteImage = document.querySelectorAll('.btn-delete-image')
+    btnsDeleteImage.forEach(btn =>{
+      btn.addEventListener('click', async(e)=>{
+        const id = btn.getAttribute('data-id')
+      })
+    })
   })
 </script>
