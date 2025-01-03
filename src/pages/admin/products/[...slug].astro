@@ -217,7 +217,7 @@ const { product, images} = data;
         </div>
 
         <!-- Slideshow -->
-        <ProductSlideShow images={images} />
+        <ProductSlideShow images={images.map(i =>i.image)} />
 
         <table class="w-full border">
           <thead>
@@ -228,8 +228,8 @@ const { product, images} = data;
           </thead>
           <tbody>
             {
-              images.map((image) => (
-                <tr class="border">
+              images.map(({image, id}) => (
+                <tr class="border" id={id}>
                   <td class="flex justify-center">
                     <ProductImage
                       src={image}
@@ -238,7 +238,7 @@ const { product, images} = data;
                     />
                   </td>
                   <td class="text-center">
-                    <button class="btn-delete-image">X</button>
+                    <button data-id={id} class="btn-delete-image">X</button>
                   </td>
                 </tr>
               ))

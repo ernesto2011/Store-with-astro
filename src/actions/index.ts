@@ -1,4 +1,5 @@
 import { loginUser, logout, registerUser } from './auth';
+import { deleteProductImage } from './products/delete-product-image.action';
 import { getProductBySlug } from './products/get-product-by-slug.action';
 import { getProductsByPage } from './products/get-products-by-page.action';
 import { updateProduct } from './products/update-product.action';
@@ -14,5 +15,6 @@ export const server = {
   //products
   getProductsByPage,
   getProductBySlug,
-  updateProduct
+  updateProduct,
+  deleteProductImage
 };

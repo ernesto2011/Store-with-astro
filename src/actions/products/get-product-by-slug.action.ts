@@ -32,7 +32,8 @@ export const getProductBySlug = defineAction({
         const images = await db.select().from(ProductImage).where(eq(ProductImage.productId, product.id));
         return {
             product,
-            images: images.map(img => img.image)
+            images: images
+            //images: images.map(img => img.image)
         }
     }
 })
