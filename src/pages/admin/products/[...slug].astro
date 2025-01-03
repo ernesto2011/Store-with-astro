@@ -238,7 +238,7 @@ const { product, images} = data;
                     />
                   </td>
                   <td class="text-center">
-                    <button data-id={id} class="btn-delete-image">X</button>
+                    <button type="button" data-id={id} class="btn-delete-image">X</button>
                   </td>
                 </tr>
               ))
@@ -298,6 +298,19 @@ import Swal from "sweetalert2";
     btnsDeleteImage.forEach(btn =>{
       btn.addEventListener('click', async(e)=>{
         const id = btn.getAttribute('data-id')
+        if(!id) return;
+        const  {data, error} = await actions.deleteProductImage(id);
+        if(error){
+          console.log(error);
+            
+          Swal.fire({
+          icon: "error",
+          title: "Error...",
+          text: "Ha occurrido un error al intentar eliminar la imagen!!",
+          });
+        }
+        
+        document.querySelector(`#${id}`)?.remove();
       })
     })
   })
