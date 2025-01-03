@@ -212,6 +212,7 @@ const { product, images} = data;
               type="file"
               accept="image/*"
               multiple
+              class="hidden"
             />
           </label>
         </div>
@@ -309,9 +310,64 @@ import Swal from "sweetalert2";
           text: "Ha occurrido un error al intentar eliminar la imagen!!",
           });
         }
-        
+
         document.querySelector(`#${id}`)?.remove();
       })
     })
+    //Drag & Drop
+    const lblSelectedFiles = document.querySelector('#lbl-selected-files') as HTMLParagraphElement;
+    const dropZone = document.querySelector('#drop-zone') as HTMLLabelElement;
+    const fileInput = document.querySelector('#file-upload') as HTMLInputElement;
+
+    const preventDefaults = (e: DragEvent) =>{
+      e.preventDefault();
+      e.stopPropagation();
+    };
+    const highlight = (e: DragEvent) =>{
+      dropZone.classList.add('border-blue-500', 'bg-blue-50')
+    }
+    const unhighlight = (e: DragEvent) =>{
+      dropZone.classList.remove('border-blue-500', 'bg-blue-50')
+    }
+    const createFileList = (files: File[]): FileList => {
+      const dataTrasfer = new DataTransfer();
+      files.forEach((file) => dataTrasfer.items.add(file));
+      return dataTrasfer.files;
+    };
+    const handleFiles = (files: FileList) => {
+      const validFiles = Array.from(files).filter((file) =>
+        file.type.startsWith('image/')
+      );
+
+      if (fileInput && validFiles.length > 0) {
+        fileInput.files = createFileList(validFiles);
+      }
+
+      lblSelectedFiles.innerHTML = `<strong>${validFiles.length} archivos seleccionados</strong>`;
+    };
+    (['dragenter','dragover','dragleave','drop'] as const).forEach(
+      (eventName) =>{
+        dropZone.addEventListener(eventName, preventDefaults);
+        document.body.addEventListener(eventName, preventDefaults);
+      }
+    );
+    (['dragenter','dragover'] as const).forEach(
+     (eventName) =>{
+        dropZone.addEventListener(eventName, highlight)
+      }
+    );
+    (['dragleave','drop'] as const).forEach(
+      (eventName) =>{
+        dropZone.addEventListener(eventName, unhighlight)
+      }
+    );
+     // Sólo imágenes
+     dropZone.addEventListener('drop', (e) => {
+      const files = e.dataTransfer?.files;
+
+      if (files) {
+        handleFiles(files);
+      }
+    });
   })
 </script>
