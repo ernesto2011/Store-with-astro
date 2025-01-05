@@ -6,22 +6,22 @@ const { isLoggedIn, isAdmin } = Astro.locals;
 
 <!-- component -->
 <nav
-  class="flex justify-between px-20 py-10 items-center fixed top-0 w-full z-10 h-20"
+  class="flex justify-between px-10 py-10 items-center fixed top-0 w-full z-10 h-20"
   style="background-color: #F9F9F9;"
 >
-  <h1 class="text-xl text-gray-800 font-bold">
+  <h1 class="text-lg sm:text-2xl font-bold inline-block bg-gradient-to-r from-purple-600 via-green-500 to-indigo-400 bg-clip-text text-transparent">
     <a href="/">AstroStore</a>
   </h1>
   <div class="flex items-center">
-    <ul class="flex items-center space-x-6">
+    <ul class="flex items-center space-x-2 sm:space-x-6">
       <CartCounter client:load transition:persist/>
       <li class="font-semibold text-gray-700">
-        <a href="/">Home</a>
+        <a href="/" class="text-sm sm:text-[16px]">Home</a>
       </li>
       {
         isAdmin && (
           <li class="font-semibold text-gray-700">
-            <a href="/admin/dashboard">Admin</a>
+            <a href="/admin/dashboard" class="text-sm sm:text-[16px]">Admin</a>
           </li>
         )
       }
@@ -29,11 +29,11 @@ const { isLoggedIn, isAdmin } = Astro.locals;
       {
         !isLoggedIn ? (
           <li class="font-semibold text-gray-700">
-            <a href="/login">Ingresar</a>
+            <a href="/login" class="text-sm sm:text-[16px]">Ingresar</a>
           </li>
         ) : (
           <li id="logout" class="font-semibold text-gray-700">
-            <a href="#">Salir</a>
+            <a href="#" class="text-sm sm:text-[16px]">Salir</a>
           </li>
         )
       }

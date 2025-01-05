@@ -13,7 +13,7 @@ export const CartCounter = () => {
     <a href="/cart" className="relative inline-block">
       {
         $itemsIcart > 0 && (
-          <span className="absolute -top-2 -right-2 flex justify-center items-center bg-blue-600 text-white text-xs rounded-full w-4 h-5">
+          <span className="absolute -top-2 -right-2 flex justify-center items-center bg-blue-600 text-white text-xs rounded-full w-4 h-5 lg:w-4 lg:h-5 xs:w-2 xs:h-2">
           {$itemsIcart}
       </span>
         )
